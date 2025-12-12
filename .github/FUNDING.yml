@@ -1,3 +1,8 @@
 # .github/FUNDING.yml
-github: [SamAde1203]
-custom: ["https://buymeacoffee.com/samade", "https://paypal.me/samade1203"]
+github: ["SamAde1203"]
+
+custom:
+  - name: "Buy Me a Coffee – Support My Work"
+    url: "https://buymeacoffee.com/samadeyemi"
+  - name: "PayPal – Send Support"
+    url: "https://paypal.me/SamAdeyemi "
