@@ -1,0 +1,136 @@
+'use client';
+
+type Props = {
+  power: number;
+  powerCI: [number, number];
+  avgDropouts: number;
+  nPerArm: number;
+  consort: {
+    assessed: number;
+    randomized: number;
+    completed: number;
+    analyzed: number;
+  };
+  dropoutRate: number;
+  onDropoutChange: (v: number) => void;
+  simulations: number;
+};
+
+export function ResultsDashboard({
+  power,
+  powerCI,
+  avgDropouts,
+  nPerArm,
+  consort,
+  dropoutRate,
+  onDropoutChange,
+  simulations,
+}: Props) {
+  const powerPercent = Math.round(power * 100);
+  const ciLow = Math.round(powerCI[0] * 100);
+  const ciHigh = Math.round(powerCI[1] * 100);
+  
+  const getPowerColor = (p: number) => {
+    if (p >= 0.8) return 'text-emerald-300';
+    if (p >= 0.6) return 'text-yellow-300';
+    return 'text-rose-400';
+  };
+
+  return (
+    <section className="mt-8 grid gap-6 md:grid-cols-[2fr,3fr]">
+      <div className="space-y-4">
+        <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold text-slate-200">
+              Power & Dropouts
+            </h3>
+            <span className="text-xs text-slate-400">
+              {simulations.toLocaleString()} sims
+            </span>
+          </div>
+          
+          <div className="mb-4">
+            <p className={`text-3xl font-bold ${getPowerColor(power)} mb-1`}>
+              {powerPercent}% <span className="text-base">power</span>
+            </p>
+            <p className="text-sm text-slate-400">
+              95% CI: {ciLow}–{ciHigh}%
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <p className="text-sm text-slate-400">
+              Avg dropouts: {' '}
+              <span className="text-slate-100 font-semibold">
+                {avgDropouts}
+              </span>
+            </p>
+            <p className="text-sm text-slate-400">
+              Participants per arm:{' '}
+              <span className="text-slate-100 font-semibold">{nPerArm}</span>
+            </p>
+          </div>
+
+          <div className="mt-6">
+            <div className="flex justify-between text-xs text-slate-400 mb-1">
+              <span>Dropout rate</span>
+              <span className="font-semibold">{Math.round(dropoutRate * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={0.4}
+              step={0.01}
+              value={dropoutRate}
+              onChange={(e) => onDropoutChange(parseFloat(e.target.value))}
+              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-cyan-400"
+            />
+            <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <span>0%</span>
+              <span>10%</span>
+              <span>20%</span>
+              <span>30%</span>
+              <span>40%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
+          <h4 className="text-sm font-semibold text-slate-200 mb-3">
+            CONSORT Summary
+          </h4>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: 'Assessed', value: consort.assessed },
+              { label: 'Randomized', value: consort.randomized },
+              { label: 'Completed', value: consort.completed },
+              { label: 'Analyzed', value: consort.analyzed },
+            ].map(({ label, value }) => (
+              <div key={label} className="text-center">
+                <p className="text-2xl font-bold text-cyan-300">{value}</p>
+                <p className="text-xs text-slate-400">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CONSORT Diagram Placeholder */}
+      <div className="w-full h-72 bg-slate-900/60 rounded-xl border border-slate-800 p-4 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-2">📊</div>
+          <h3 className="text-sm font-semibold text-slate-200 mb-1">
+            CONSORT Flow Diagram
+          </h3>
+          <p className="text-xs text-slate-400">
+            Visual participant flow will appear here
+          </p>
+          <p className="text-xs text-slate-500 mt-2">
+            Assessed: {consort.assessed} → Randomized: {consort.randomized}<br/>
+            Completed: {consort.completed} → Analyzed: {consort.analyzed}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

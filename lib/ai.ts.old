@@ -1,0 +1,61 @@
+import { TrialParams } from './types';
+
+// Mock AI parser with better detection
+export async function parseProtocol(text: string): Promise<TrialParams> {
+  // Default response
+  const trial: TrialParams = {
+    n_patients: 60,
+    weeks: 12,
+    endpoint: 'hba1c',
+    arms: [
+      { name: 'Active Treatment', effect_size: -0.8 },
+      { name: 'Control', effect_size: -0.1 }
+    ],
+    baseline: 7.5,
+    sd: 1.2,
+  };
+
+  // Detect endpoint
+  const lowerText = text.toLowerCase();
+  if (lowerText.includes('weight') || lowerText.includes('kg') || lowerText.includes('pound')) {
+    trial.endpoint = 'weight';
+    trial.baseline = 85;
+    trial.sd = 15;
+  } else if (lowerText.includes('glucose') || lowerText.includes('blood sugar')) {
+    trial.endpoint = 'glucose';
+    trial.baseline = 150;
+    trial.sd = 30;
+  }
+
+  // Extract numbers
+  const numbers = text.match(/\d+/g)?.map(Number) || [];
+  
+  if (numbers.length > 0) {
+    // First number often is sample size
+    if (numbers[0] >= 10 && numbers[0] <= 10000) {
+      trial.n_patients = numbers[0];
+    }
+    
+    // Look for week duration
+    const weekMatch = text.match(/(\d+)\s*(week|month)/i);
+    if (weekMatch) {
+      trial.weeks = parseInt(weekMatch[1]);
+      if (weekMatch[2].toLowerCase().includes('month')) {
+        trial.weeks *= 4; // Convert months to weeks
+      }
+    }
+  }
+
+  // Detect number of arms
+  if (lowerText.includes('placebo') || lowerText.includes('control') || lowerText.includes('comparator')) {
+    trial.arms = [
+      { name: 'Experimental', effect_size: -0.8 },
+      { name: 'Placebo', effect_size: -0.1 }
+    ];
+  }
+
+  // Simulate processing delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  return trial;
+}
