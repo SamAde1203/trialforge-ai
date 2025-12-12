@@ -129,3 +129,4 @@ VERCEL_ANALYTICS_ID=
 # Optional: Custom simulation parameters
 NEXT_PUBLIC_DEFAULT_SIMULATIONS=5000
 NEXT_PUBLIC_MAX_DROPOUT_RATE=0.4
+Deployed via Vercel – last updated 12 Dec 2025
