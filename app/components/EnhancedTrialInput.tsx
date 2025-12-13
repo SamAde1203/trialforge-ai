@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { PremiumDashboard } from './PremiumDashboard';
+import type { EnhancedSimulationResult, SimulationResult } from '@/lib/types';
 import {
   Loader2,
   AlertCircle,
@@ -48,6 +49,14 @@ type DashboardResult = {
   timeline: number;
   recommendations: string[];
   protocol: string;
+  // Add missing properties that SimulationResult expects
+  avgDropouts?: number;
+  nPerArm?: number;  // Changed from number[] to number
+  consort?: any;
+  simulations?: number;
+  timestamp?: string;
+  dropoutRate?: number;
+  probabilityOfSuccess?: number;
 };
 
 export function EnhancedTrialInput() {
@@ -84,6 +93,42 @@ export function EnhancedTrialInput() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Move this inside the return statement where it's actually used
+  // and only create when result exists
+  const getEnhancedResult = (): EnhancedSimulationResult | null => {
+    if (!result) return null;
+    
+    // Calculate required sample per arm based on requiredSample
+    // Assuming 2 arms, divide total by 2
+    const nPerArm = Math.ceil(result.requiredSample / 2);
+    
+    const baseCase: SimulationResult = {
+      power: result.power,
+      powerCI: result.powerCI,
+      avgDropouts: result.avgDropouts || 0,
+      nPerArm: nPerArm,  // Changed to single number
+      consort: result.consort || {},
+      simulations: result.simulations || 10000,
+      timestamp: result.timestamp || new Date().toISOString(),
+      requiredSample: result.requiredSample,
+      dropoutImpact: result.dropoutImpact,
+      costEstimate: result.costEstimate,
+      timeline: result.timeline,
+      effectSize: result.effectSize,
+      dropoutRate: result.dropoutRate || 0.1,
+      probabilityOfSuccess: result.probabilityOfSuccess || 0.8,
+    };
+
+    return {
+      baseCase,
+      conservative: { ...baseCase, power: baseCase.power * 0.8 }, // Example conservative scenario
+      optimistic: { ...baseCase, power: Math.min(baseCase.power * 1.2, 0.99) }, // Example optimistic scenario
+      recommendations: result.recommendations ?? [],
+      riskLevel: result.riskLevel || 'medium',
+      confidence: result.confidence ?? 0.8,
+    };
   };
 
   return (
@@ -226,22 +271,11 @@ export function EnhancedTrialInput() {
       </div>
 
       {/* Results Dashboard */}
-      {result && (
+      {result && getEnhancedResult() && (
         <div className="animate-fadeIn">
           <PremiumDashboard
-            result={{
-              power: result.power,
-              powerCI: result.powerCI,
-              requiredSample: result.requiredSample,
-              effectSize: result.effectSize,
-              dropoutImpact: result.dropoutImpact,
-              confidence: result.confidence,
-              riskLevel: result.riskLevel,
-              costEstimate: result.costEstimate,
-              timeline: result.timeline,
-              recommendations: result.recommendations,
-            }}
-            protocol={result.protocol}
+            result={getEnhancedResult()!}
+            protocol={text}
             isLoading={loading}
           />
         </div>

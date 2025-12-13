@@ -307,42 +307,38 @@ export default function SolutionsSection() {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  ["Natural language protocol input", true, true, true, true],
-                  ["AI parameter extraction", true, true, true, true],
-                  ["Monte Carlo simulation", true, true, true, true],
-                  ["Interactive dashboard", true, true, true, true],
-                  ["Multi-scenario analysis", true, true, true, true],
-                  ["Platform trial support", true, true, true, false],
-                  ["Recruitment forecasting", true, true, false, true],
-                  ["Full audit trail & reproducibility", false, true, true, false],
-                  ["Team collaboration & sharing", true, true, true, true],
-                  ["PDF/CONSORT export", true, true, true, true],
-                ].map((row) => (
-                  <tr
-                    key={row[0]}
-                    className="border-b border-slate-700/30 hover:bg-slate-950/30 transition-colors"
-                  >
-                    <td className="py-3 px-4 text-slate-300 font-medium">
-                      {row[0]}
-                    </td>
-                    {[1, 2, 3, 4].map((col) => (
-                      <td
-                        key={col}
-                        className="py-3 px-4 text-center"
-                      >
-                        {row[col] ? (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300">
-                            ✓
-                          </span>
-                        ) : (
-                          <span className="text-slate-600">—</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
+  {[
+    ['Natural language protocol input', true, true, true, true],
+    ['AI parameter extraction', true, true, true, true],
+    ['Monte Carlo simulation', true, true, true, true],
+    ['Interactive dashboard', true, true, true, true],
+    ['Multi-scenario analysis', true, true, true, true],
+    ['Platform trial support', true, true, true, false],
+    ['Recruitment forecasting', true, true, false, true],
+    ['Full audit trail & reproducibility', false, true, true, false],
+    ['Team collaboration & sharing', true, true, true, true],
+    ['PDF/CONSORT export', true, true, true, true],
+  ].map((row, index) => (
+    <tr
+      key={String(row[0]) || `row-${index}`}
+      className="border-b border-slate-700/30 hover:bg-slate-950/30 transition-colors"
+    >
+      <td className="py-3 px-4 text-slate-300 font-medium">{row[0]}</td>
+      {[1, 2, 3, 4].map((col) => (
+        <td key={col} className="py-3 px-4 text-center">
+          {row[col] ? (
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300">
+              ✓
+            </span>
+          ) : (
+            <span className="text-slate-600">—</span>
+          )}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+
             </table>
           </div>
         </div>

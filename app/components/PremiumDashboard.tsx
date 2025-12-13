@@ -33,8 +33,14 @@ export function PremiumDashboard({
     sample: 0,
   });
 
-  // Extract scenario results (NEW structure from advancedStats.ts)
-  const { baseCase, conservative, optimistic, recommendations, riskLevel, confidence } = result;
+  const {
+    baseCase,
+    conservative,
+    optimistic,
+    recommendations,
+    riskLevel,
+    confidence,
+  } = result;
 
   useEffect(() => {
     const animate = (
@@ -65,7 +71,7 @@ export function PremiumDashboard({
     animate(baseCase.power * 100, 'power', 1500);
     animate(confidence * 100, 'confidence', 1800);
     animate(baseCase.requiredSample, 'sample', 2000);
-  }, [result, baseCase, confidence]);
+  }, [baseCase, confidence]);
 
   const getRiskColor = (level: 'low' | 'medium' | 'high') => {
     switch (level) {
@@ -124,7 +130,8 @@ export function PremiumDashboard({
             {animatedValues.sample.toLocaleString()}
           </p>
           <p className="text-xs text-slate-500 mt-2">
-            +{baseCase.dropoutImpact}% buffer for {(baseCase.dropoutRate * 100).toFixed(0)}% expected dropout
+            +{baseCase.dropoutImpact}% buffer for{' '}
+            {(baseCase.dropoutRate * 100).toFixed(0)}% expected dropout
           </p>
         </div>
 
@@ -189,7 +196,7 @@ export function PremiumDashboard({
         </div>
         <ul className="space-y-2">
           {recommendations && recommendations.length > 0 ? (
-            recommendations.map((rec, i) => (
+            recommendations.map((rec: string, i: number) => (
               <li key={i} className="flex gap-3 text-sm text-slate-300">
                 <span className="text-teal-400 flex-shrink-0">→</span>
                 <span>{rec}</span>
@@ -209,7 +216,7 @@ export function PremiumDashboard({
             <p className="text-sm text-slate-400">Estimated Budget</p>
           </div>
           <p className="text-3xl font-bold text-white">
-            ${(baseCase.costEstimate / 1000000).toFixed(1)}M
+            {(baseCase.costEstimate / 1_000_000).toFixed(1)}M
           </p>
         </div>
         <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">

@@ -1,3 +1,5 @@
+// lib/types.ts
+
 export type TrialParams = {
   n_patients: number;
   weeks: number;
@@ -23,6 +25,27 @@ export type SimulationResult = {
   consort: ConsortData;
   simulations: number;
   timestamp: string;
+
+  // enhanced scalar fields used in dashboard/export
+  requiredSample: number;
+  dropoutImpact: number;
+  costEstimate: number;
+  timeline: number;
+
+  // base-case trial details
+  effectSize: number;
+  dropoutRate: number;
+  probabilityOfSuccess: number;
+  recommendations?: string[];
+};
+
+export type EnhancedSimulationResult = {
+  baseCase: SimulationResult;
+  conservative: SimulationResult;
+  optimistic: SimulationResult;
+  recommendations?: string[];
+  riskLevel: 'low' | 'medium' | 'high';
+  confidence: number;
 };
 
 export type ApiResponse<T> = {
