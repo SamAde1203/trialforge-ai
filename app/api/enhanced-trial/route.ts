@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { parseProtocolWithAI } from '@/lib/realAI';
-import { enhancedSimulateTrial } from '@/lib/advancedStats';  // ← REMOVE THE //
+import { enhancedSimulateTrial } from '@/lib/advancedStats';
 
 export async function POST(req: Request) {
   try {
