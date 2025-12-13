@@ -1,4 +1,5 @@
 // lib/types.ts
+import type { EnhancedSimulationResult } from '../../../lib/types'; // Relative path
 
 export type TrialParams = {
   n_patients: number;
