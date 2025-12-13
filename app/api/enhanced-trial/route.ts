@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { parseProtocolWithAI } from '@/lib/realAI';
 import { enhancedSimulateTrial } from '@/lib/advancedStats';
+// ❌ remove this line:
+// import type { EnhancedSimulationResult } from '@/lib/types';
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +17,6 @@ export async function POST(req: Request) {
 
     const aiResult = await parseProtocolWithAI(protocol);
 
-    // Let enhancedSimulateTrial return whatever shape it returns (ScenarioResult / EnhancedSimulationResult)
     const simulation = await enhancedSimulateTrial(aiResult.trial);
 
     return NextResponse.json({
