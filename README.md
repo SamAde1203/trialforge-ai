@@ -130,6 +130,16 @@ VERCEL_ANALYTICS_ID=
 NEXT_PUBLIC_DEFAULT_SIMULATIONS=5000
 NEXT_PUBLIC_MAX_DROPOUT_RATE=0.4
 
+## ☕ Support the Project
+
+If you find TrialForge AI Pro valuable:
+
+- **⭐ Star the repo** - Helps visibility
+- **🔄 Share with colleagues** - Spread the word
+- **💰 Support development** - [GitHub Sponsors](https://github.com/sponsors/SamAde1203) | [Buy Me a Coffee](https://buymeacoffee.com/samadeyemi)
+
+*Support helps maintain and improve this open-source tool for clinical researchers worldwide.*
+
 ## ⚠️ Clinical Governance Notice
 TrialForge AI is a research and educational simulation tool.  
 It is **not** intended for clinical decision-making, patient care, regulatory submission,
